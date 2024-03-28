@@ -1,0 +1,10 @@
+{
+  "name": "explore",
+  "devDependencies": {
+    "bun-types": "canary",
+    "eslint": "^8.57.0"
+  },
+  "prettier": {
+    "semi": false
+  }
+}

@@ -1,0 +1,56 @@
+name: "tauri-release"
+on:
+  push:
+    branches:
+      - tauri-release
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        settings:
+          - platform: "macos-latest"
+            args: "--target universal-apple-darwin"
+          - platform: "ubuntu-20.04"
+            args: ""
+          - platform: "windows-latest"
+            args: "--target x86_64-pc-windows-msvc"
+
+    runs-on: ${{ matrix.settings.platform }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
+      - name: install dependencies (ubuntu only)
+        if: matrix.settings.platform == 'ubuntu-20.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.5.0
+      - name: Install dependencies
+        run: pnpm install
+      # TODO: this needs to be tested better, most likely will break on new release
+      # https://github.com/tauri-apps/tauri-action
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.CLASSIC_TOKEN }}
+          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+        with:
+          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: "LA Todo v__VERSION__"
+          releaseBody: "See the assets to download this version and install."
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.settings.args }}

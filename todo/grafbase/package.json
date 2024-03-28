@@ -1,0 +1,19 @@
+{
+  "name": "grafbase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@chronark/zod-bird": "^0.1.1",
+    "@kuskusapp/ai": "^0.1.24",
+    "@upstash/redis": "^1.21.0",
+    "stripe": "^12.9.0",
+    "zod": "^3.21.4"
+  }
+}

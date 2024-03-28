@@ -1,0 +1,53 @@
+{
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
+    "devPath": "http://localhost:3000",
+    "distDir": "https://todo.learn-anything.xyz",
+    "withGlobalTauri": false
+  },
+  "package": {
+    "productName": "LA Todo",
+    "version": "0.0.1"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": true
+      }
+    },
+    "bundle": {
+      "active": true,
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "identifier": "todo.learn-anything.xyz",
+      "targets": "all"
+    },
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://github.com/learn-anything/todo/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDRFNzQ5REQ2MTM2MUUxOEEKUldTSzRXRVQxcDEwVGxGVmc2SjV3d1B0c1JMV3VKQWI2RVozd25sNStzOE5Ib1BNZFMwSFRlZ3AK"
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "LA Todo",
+        "titleBarStyle": "Overlay",
+        "maximized": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+## Old (mostly outdated)
+
+- GPT-4 only. [use the OpenAI 2.5k credits](https://twitter.com/nikitavoloboev/status/1712181760195219637?s=20). AI under subscription. no free AI.
+- [SyncLinear](https://synclinear.com) is great tool that syncs up Linear with GitHub
+  - It works well but I get issues using it with multiple [Linear projects](https://github.com/calcom/synclinear.com/issues/10#issuecomment-1689171289)
+  - Make it work exactly like Linear + GitHub sync. Make integration + UI as smooth as in Linear.
+  - Tasks here should be powered by app. So app becomes a full [Ship 2.0 GitHub like issue/pr client](https://www.realartists.com/blog/ship-20.html).
+- connect local git repos to the app
+  - it will connect readme.md and read the `## Tasks` in the app
+  - use app as normal, move tasks around, add descriptions etc. and it will modify the `## Tasks` markdown part of the readme
+  - if task is connected to GitHub issue, live update it in the issue too
+- auth/setup should be better/easier, should be just one CLI command to bootstrap any new developer. Perhaps using https://devenv.sh/
+  - should maybe setup https://1password.com/product/secrets/
+  - think of prividing common API keys for Tinybird/Upstash
+- explain tasks
+  - hotkey when activated on active task, in right sidebar shows explanation for how to do the task
+    - can be activated on suggested tasks too
+- build native iOS app based of [this app](https://github.com/Bartozo/Life-Progress-iOS)
+- completely open source all my tasks for projects
+  - have app manage the various `todo.md` from all the projects in nice clean UI
+  - everything persisted to `todo.md`. private tasks are presisted to `private-todo.md` also in the project but git ignored
+  - figure out how media embedding will work
+- [plane](https://github.com/makeplane/plane) has interesting code/ideas
+- do full feature set of [Canny](https://canny.io) but cheaper
+  - users auth once and can reuse auth sessions across `todo.learn-anything.xyz/project-name/` or `todo.learn-anything.xyz/username/`
+- only use GPT-4 (no 3). cache everything using grafbase K/V store instead of upstash
+- have AI pricing similar to [Cursor](https://www.cursor.sh/), can keep price lower to build up the cache
+- have a way to search through computed tasks. i.e. GPT-4 suggested tasks / explanation that is saved and can be easily searched and viewed/reused
+- https://goblin.tools/Formalizer has neat ideas
+- use https://github.com/XAMPPRocky/octocrab to make github calls from tauri rust

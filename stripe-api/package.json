@@ -1,0 +1,21 @@
+{
+  "name": "@la/api",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy src/index.ts --keep-vars --env prod",
+    "deploy:staging": "wrangler deploy src/index.ts --keep-vars --env staging"
+  },
+  "prettier": {
+    "semi": false
+  },
+  "dependencies": {
+    "edgedb": "^1.4.1",
+    "hono": "^4.1.1",
+    "stripe": "^14.21.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240314.0",
+    "wrangler": "^3.34.2"
+  }
+}

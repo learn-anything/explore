@@ -1,0 +1,25 @@
+dist
+run.ts
+.solid
+api/db/dbschema/edgeql-js
+.DS_Store
+seed
+app/.browserslistrc
+app/.electron-vendors.cache.json
+.eslintcache
+docs/private.md
+docs/private-todo.md
+private
+
+# local sqlite dbs
+*.sqlite
+package-lock.json
+bun.lockb
+tsconfig.tsbuildinfo
+.cache/
+ai
+solana
+**.db
+
+# vite
+**/vite.config.ts.timestamp-**

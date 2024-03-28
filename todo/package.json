@@ -1,0 +1,66 @@
+{
+  "name": "learn-anything-todo",
+  "scripts": {
+    "dev": "solid-start dev --https",
+    "build": "solid-start build",
+    "start": "solid-start start",
+    "graphql": "graphql-codegen --config ./src/graphql/codegen.ts -r dotenv/config",
+    "tauri": "tauri",
+    "grafbase": "grafbase dev"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.4.0",
+    "autoprefixer": "^10.4.15",
+    "grafbase": "^0.32.4",
+    "postcss": "^8.4.28",
+    "prettier": "^3.0.2",
+    "solid-devtools": "^0.27.7",
+    "solid-start-node": "^0.3.4",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9"
+  },
+  "dependencies": {
+    "@chronark/zod-bird": "^0.1.1",
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/typed-document-node": "^5.0.1",
+    "@graphql-codegen/typescript": "^4.0.1",
+    "@graphql-codegen/typescript-operations": "^4.0.1",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "@motionone/solid": "^10.16.2",
+    "@solid-primitives/autofocus": "^0.0.108",
+    "@solid-primitives/context": "^0.2.1",
+    "@solid-primitives/event-listener": "^2.3.0",
+    "@solid-primitives/keyboard": "^1.2.5",
+    "@solid-primitives/keyed": "^1.2.0",
+    "@solid-primitives/scheduled": "^1.4.1",
+    "@solid-primitives/scroll": "^2.0.20",
+    "@solid-primitives/utils": "^6.2.1",
+    "@solidjs/meta": "^0.28.6",
+    "@solidjs/router": "^0.8.3",
+    "@teamhanko/hanko-elements": "0.8.3",
+    "@teamhanko/hanko-frontend-sdk": "0.8.3",
+    "@tauri-apps/api": "^1.4.0",
+    "@types/node": "^20.5.7",
+    "clsx": "^2.0.0",
+    "dotenv": "^16.3.1",
+    "fuse.js": "^6.6.2",
+    "graphql": "^16.8.0",
+    "graphql-request": "^6.1.0",
+    "oidc-client-ts": "^2.2.5",
+    "solid-headless": "^0.13.1",
+    "solid-js": "^1.7.11",
+    "solid-start": "^0.3.4",
+    "solid-start-cloudflare-pages": "^0.3.4",
+    "split.js": "^1.6.5",
+    "stripe": "^13.3.0",
+    "zod": "^3.22.2"
+  },
+  "prettier": {
+    "semi": false
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

@@ -26,10 +26,16 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
+    "@solid-primitives/event-listener": "^2.3.3",
+    "@teamhanko/hanko-elements": "^0.10.1",
+    "@teamhanko/hanko-frontend-sdk": "^0.10.1",
     "clsx": "^2.1.0",
     "grafbase": "^0.64.3",
     "graphql": "^16.8.1",
+    "js-cookie": "^3.0.5",
     "rehype-raw": "^7.0.0",
+    "solid-js": "^1.8.16",
+    "solid-start": "^0.3.11",
     "stripe": "^14.22.0",
     "watcher": "^2.3.0"
   },

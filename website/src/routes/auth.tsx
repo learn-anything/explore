@@ -11,91 +11,91 @@ import { useMobius, useSignIn } from "../root"
 // it renders hanko web components: https://github.com/teamhanko/hanko/blob/main/frontend/elements/README.md
 // on sign up, creates a user in DB or just logs in if user already exists
 export default function SignInPage() {
-  const navigate = useNavigate()
-  const signIn = useSignIn()
-  const mobius = useMobius()
-  const userStore = useUser()
+	const navigate = useNavigate()
+	const signIn = useSignIn()
+	const mobius = useMobius()
+	const userStore = useUser()
 
-  onMount(async () => {
-    // checks if user is already logged in with valid token
-    const res = await fetch(`${import.meta.env.VITE_HANKO_API}/me`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${getHankoCookie()}`
-      }
-    })
-    // if status 200, means user is logged in with valid non expired token, navigate to using the app
-    if (res.status === 200) {
-      const route = localStorage.getItem("pageBeforeSignIn")
-      if (route) {
-        localStorage.setItem("pageBeforeSignIn", "")
-        navigate(route)
-      } else {
-        navigate("/")
-      }
-    }
+	onMount(async () => {
+		// checks if user is already logged in with valid token
+		const res = await fetch(`${import.meta.env.VITE_HANKO_API}/me`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${getHankoCookie()}`,
+			},
+		})
+		// if status 200, means user is logged in with valid non expired token, navigate to using the app
+		if (res.status === 200) {
+			const route = localStorage.getItem("pageBeforeSignIn")
+			if (route) {
+				localStorage.setItem("pageBeforeSignIn", "")
+				navigate(route)
+			} else {
+				navigate("/")
+			}
+		}
 
-    // register hanko component
-    register(import.meta.env.VITE_HANKO_API, {
-      shadow: true, // if true, can use this for styling: https://github.com/teamhanko/hanko/blob/main/frontend/elements/README.md#css-shadow-parts
-      injectStyles: true
-    }).catch((error) => {
-      console.error(error, "error")
-    })
-  })
+		// register hanko component
+		register(import.meta.env.VITE_HANKO_API, {
+			shadow: true, // if true, can use this for styling: https://github.com/teamhanko/hanko/blob/main/frontend/elements/README.md#css-shadow-parts
+			injectStyles: true,
+		}).catch((error) => {
+			console.error(error, "error")
+		})
+	})
 
-  makeEventListener(
-    document,
-    "hankoAuthSuccess",
-    async () => {
-      const userClient = new UserClient(import.meta.env.VITE_HANKO_API, {
-        timeout: 0,
-        cookieName: "hanko",
-        localStorageKey: "hanko"
-      })
-      const user = await userClient.getCurrent()
-      const email = user.email
+	makeEventListener(
+		document,
+		"hankoAuthSuccess",
+		async () => {
+			const userClient = new UserClient(import.meta.env.VITE_HANKO_API, {
+				timeout: 0,
+				cookieName: "hanko",
+				localStorageKey: "hanko",
+			})
+			const user = await userClient.getCurrent()
+			const email = user.email
 
-      const hankoCookie = await getHankoCookie()
-      // doing this so that below GraphQL query can work, it supplies `mobius` client with the hanko token
-      signIn(hankoCookie)
+			const hankoCookie = await getHankoCookie()
+			// doing this so that below GraphQL query can work, it supplies `mobius` client with the hanko token
+			signIn(hankoCookie)
 
-      await mobius.mutate({
-        createUser: {
-          where: {
-            email: email
-          },
-          select: true
-        }
-      })
-      userStore.setSignedIn(true)
-      userStore.setEmail(email)
-      // TODO: do it as part of `createUser`. have `createUser` return `isMember` in case user exists
-      // and is member
-      const res = await mobius.query({
-        getUserDetails: {
-          isMember: true
-        }
-      })
-      if (res) {
-        // @ts-ignore
-        userStore.set({ member: res?.data?.getUserDetails.isMember })
-      }
-      const route = localStorage.getItem("pageBeforeSignIn")
-      if (route) {
-        localStorage.setItem("pageBeforeSignIn", "")
-        navigate(route)
-      } else {
-        navigate("/")
-      }
-    },
-    { passive: true }
-  )
+			await mobius.mutate({
+				createUser: {
+					where: {
+						email: email,
+					},
+					select: true,
+				},
+			})
+			userStore.setSignedIn(true)
+			userStore.setEmail(email)
+			// TODO: do it as part of `createUser`. have `createUser` return `isMember` in case user exists
+			// and is member
+			const res = await mobius.query({
+				getUserDetails: {
+					isMember: true,
+				},
+			})
+			if (res) {
+				// @ts-ignore
+				userStore.set({ member: res?.data?.getUserDetails.isMember })
+			}
+			const route = localStorage.getItem("pageBeforeSignIn")
+			if (route) {
+				localStorage.setItem("pageBeforeSignIn", "")
+				navigate(route)
+			} else {
+				navigate("/")
+			}
+		},
+		{ passive: true },
+	)
 
-  return (
-    <>
-      <style>
-        {`
+	return (
+		<>
+			<style>
+				{`
         #Auth:hover {
           transform: translateY(-4px);
           transition: all 0.3s linear;
@@ -135,18 +135,18 @@ export default function SignInPage() {
           --headline2-margin: 1rem 0 .5rem;
         }
       `}
-      </style>
-      <div class="text-white bg-neutral-950">
-        <div class="">
-          <div class="flex flex-col items-center h-screen justify-center ">
-            <div class="flex flex-col items-center p-10 rounded-lg border bg-black border-gray-200">
-              <div class="text-xl font-bold">Sign in / up with</div>
-              {/* @ts-ignore */}
-              <hanko-auth />
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  )
+			</style>
+			<div class="text-white bg-neutral-950">
+				<div class="">
+					<div class="flex flex-col items-center h-screen justify-center ">
+						<div class="flex flex-col items-center p-10 rounded-lg border bg-black border-gray-200">
+							<div class="text-xl font-bold">Sign in / up with</div>
+							{/* @ts-ignore */}
+							<hanko-auth />
+						</div>
+					</div>
+				</div>
+			</div>
+		</>
+	)
 }

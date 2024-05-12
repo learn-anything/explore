@@ -193,6 +193,11 @@ module default {
     title: str;
   }
   type GlobalLink {
+    # TODO: add this to LA
+    websiteDown: bool;
+    # TODO: add to la
+    # only when we know precise date
+    preciseDate: datetime;
     # nice title from url
     required title: str;
     # unique url of the link (without protocol)
@@ -242,6 +247,10 @@ module default {
     link mainTopic: GlobalTopic;
   }
   type GlobalTopic {
+    # TODO: optional path of topic, built on top of other GlobalTopic names
+    # i.e. /physics/quantum-physics
+    # topicPath: str;
+
     # url friendly unique name of topic. i.e. 'physics' or 'linear-algebra'
     # lowercase + dash separate words
     required name: str {

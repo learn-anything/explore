@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+  --dark: #0f0f0f;
+  --text-grey: #f9f9f9;
+}
+html {
+  background-color: var(--dark);
+  color: var(--text-grey)
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd78;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

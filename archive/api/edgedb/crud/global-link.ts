@@ -11,8 +11,8 @@ export async function updateTitleOfGlobalLink(url: string, title: string) {
     .update(e.GlobalLink, () => ({
       filter_single: { url: cleanUrl! },
       set: {
-        title: title
-      }
+        title: title,
+      },
     }))
     .run(client)
 }
@@ -22,7 +22,7 @@ export async function getAllGlobalLinks() {
     .select(e.GlobalLink, () => ({
       id: true,
       title: true,
-      url: true
+      url: true,
       // limit: 100,
     }))
     .run(client)
@@ -33,7 +33,7 @@ export async function getAllGlobalLinksForTopic(topicName: string) {
   const topic = await e
     .select(e.GlobalTopic, () => ({
       filter_single: { name: topicName },
-      id: true
+      id: true,
     }))
     .run(client)
 
@@ -46,7 +46,7 @@ export async function getAllGlobalLinksForTopic(topicName: string) {
         url: true,
         protocol: true,
         description: true,
-        year: true
+        year: true,
       }))
       .run(client)
     return links
@@ -66,7 +66,7 @@ export async function getGlobalLink(id: string) {
       fullUrl: true,
       description: true,
       urlTitle: true,
-      year: true
+      year: true,
     }))
     .run(client)
   return link
@@ -82,7 +82,7 @@ export async function likeOrUnlikeGlobalLink(
 ) {
   const foundUser = foundUserByHankoId(hankoId)
   const foundLink = e.select(e.PersonalLink, () => ({
-    filter_single: { id: personalLinkId }
+    filter_single: { id: personalLinkId },
   }))
 
   switch (action) {
@@ -90,8 +90,8 @@ export async function likeOrUnlikeGlobalLink(
       return e
         .update(foundUser, () => ({
           set: {
-            linksLiked: { "-=": foundLink }
-          }
+            linksLiked: { "-=": foundLink },
+          },
         }))
         .run(client)
     case "like":
@@ -107,8 +107,8 @@ export async function likeOrUnlikeGlobalLink(
             e.op(user.linksTracked, "<", 10)
           ),
           set: {
-            linksLiked: { "+=": foundLink }
-          }
+            linksLiked: { "+=": foundLink },
+          },
         }))
         .run(client)
     default:
@@ -126,7 +126,7 @@ export async function updateGlobalLinkProgress(
 ) {
   const foundUser = foundUserByHankoId(hankoId)
   const foundGlobalLink = e.select(e.GlobalLink, () => ({
-    filter_single: { id: globalLinkId }
+    filter_single: { id: globalLinkId },
   }))
   // const foundPersonalLink = e.select(e.PersonalLink, (pl) => ({
   //   filter: e.op(pl.globalLink.id, "=", foundGlobalLink.id)
@@ -142,7 +142,7 @@ export async function updateGlobalLinkProgress(
   // const link = await e.select(foundPersonalLink).run(client)
   const personalLink = e.op(
     e.select(e.PersonalLink, () => ({
-      filter_single: { globalLink: foundGlobalLink }
+      filter_single: { globalLink: foundGlobalLink },
     })),
     "??",
     e.insert(e.PersonalLink, { globalLink: foundGlobalLink })
@@ -163,8 +163,8 @@ export async function updateGlobalLinkProgress(
           set: {
             linksBookmarked: { "-=": personalLink },
             linksInProgress: { "-=": personalLink },
-            linksCompleted: { "-=": personalLink }
-          }
+            linksCompleted: { "-=": personalLink },
+          },
         }))
         .run(client)
     case "bookmark":
@@ -181,11 +181,11 @@ export async function updateGlobalLinkProgress(
           ),
           set: {
             linksBookmarked: {
-              "+=": personalLink
+              "+=": personalLink,
             },
             linksInProgress: { "-=": personalLink },
-            linksCompleted: { "-=": personalLink }
-          }
+            linksCompleted: { "-=": personalLink },
+          },
         }))
         .run(client)
     case "inProgress":
@@ -203,8 +203,8 @@ export async function updateGlobalLinkProgress(
           set: {
             linksBookmarked: { "-=": personalLink },
             linksInProgress: { "+=": personalLink },
-            linksCompleted: { "-=": personalLink }
-          }
+            linksCompleted: { "-=": personalLink },
+          },
         }))
         .run(client)
     case "complete":
@@ -222,8 +222,8 @@ export async function updateGlobalLinkProgress(
           set: {
             linksBookmarked: { "-=": personalLink },
             linksInProgress: { "-=": personalLink },
-            linksCompleted: { "+=": personalLink }
-          }
+            linksCompleted: { "+=": personalLink },
+          },
         }))
         .run(client)
     default:
@@ -239,7 +239,7 @@ export async function updateAllGlobalLinksToHaveRightUrl() {
       id: true,
       title: true,
       url: true,
-      protocol: true
+      protocol: true,
     }))
     .run(client)
 
@@ -249,7 +249,7 @@ export async function updateAllGlobalLinksToHaveRightUrl() {
 
     const existingLink = await e
       .select(e.GlobalLink, (gl) => ({
-        filter: e.op(gl.url, "=", newUrl!)
+        filter: e.op(gl.url, "=", newUrl!),
       }))
       .run(client)
 
@@ -260,8 +260,8 @@ export async function updateAllGlobalLinksToHaveRightUrl() {
           set: {
             url: newUrl,
             protocol: protocol,
-            fullUrl: link.url
-          }
+            fullUrl: link.url,
+          },
         }))
         .run(client)
       console.log(updatedLink, "link updated")
@@ -274,7 +274,7 @@ export async function removeTrailingSlashFromGlobalLinks() {
   const links = await e
     .select(e.GlobalLink, (gl) => ({
       id: true,
-      url: true
+      url: true,
     }))
     .run(client)
 
@@ -289,7 +289,7 @@ export async function removeTrailingSlashFromGlobalLinks() {
       .select(e.GlobalLink, (gl) => ({
         filter: e.op(gl.url, "=", url),
         id: true,
-        url: true
+        url: true,
       }))
       .run(client)
 
@@ -300,7 +300,7 @@ export async function removeTrailingSlashFromGlobalLinks() {
       await e
         .delete(e.GlobalLink, (gl) => ({
           // @ts-ignore
-          filter_single: { id: link.id }
+          filter_single: { id: link.id },
         }))
         .run(client)
       continue
@@ -308,8 +308,8 @@ export async function removeTrailingSlashFromGlobalLinks() {
         .update(e.GlobalLink, (gl) => ({
           filter_single: { id: link.id },
           set: {
-            url: url
-          }
+            url: url,
+          },
         }))
         .unlessConflict((gl) => ({}))
         .run(client)
@@ -326,7 +326,7 @@ export async function removeProtocolFromUrlOfGlobalLinks() {
       id: true,
       url: true,
       fullUrl: true,
-      protocol: true
+      protocol: true,
     }))
     .run(client)
 
@@ -341,8 +341,8 @@ export async function removeProtocolFromUrlOfGlobalLinks() {
         set: {
           url: newUrl,
           protocol: protocol,
-          fullUrl: globalLink.url
-        }
+          fullUrl: globalLink.url,
+        },
       }))
       .run(client)
   }
@@ -352,7 +352,7 @@ export async function removeEndingSlashFromUrls() {
   const globalLinks = await e
     .select(e.GlobalLink, () => ({
       id: true,
-      url: true
+      url: true,
     }))
     .run(client)
 
@@ -363,8 +363,8 @@ export async function removeEndingSlashFromUrls() {
         .update(e.GlobalLink, () => ({
           filter_single: { id: globalLink.id },
           set: {
-            url: newUrl
-          }
+            url: newUrl,
+          },
         }))
         .run(client)
     }
@@ -379,7 +379,7 @@ export async function attachGlobalLinkToGlobalTopic(
     .select(e.GlobalTopic, () => ({
       prettyName: true,
       id: true,
-      filter_single: { name: globalTopicName }
+      filter_single: { name: globalTopicName },
     }))
     .run(client)
   console.log(globalTopic, "gt")
@@ -429,18 +429,18 @@ export async function addGlobalLink(
         year: year,
         description: description,
         mainTopic: e.select(e.GlobalTopic, () => ({
-          filter_single: { name: mainTopic! }
-        }))
+          filter_single: { name: mainTopic! },
+        })),
       })
       .unlessConflict((gl) => ({
         on: gl.url,
         else: e.update(gl, () => ({
           set: {
             mainTopic: e.select(e.GlobalTopic, () => ({
-              filter_single: { name: mainTopic! }
-            }))
-          }
-        }))
+              filter_single: { name: mainTopic! },
+            })),
+          },
+        })),
       }))
       .run(client)
   }
@@ -466,7 +466,7 @@ export async function addOrUpdatePersonalLink(
         title: title,
         verified: false,
         // TODO: consider adding a switch on `add new link` to mark link public/private
-        public: true
+        public: true,
         // TODO: add main topic later
         // mainTopic: e.select(e.GlobalTopic, () => ({
         //   filter_single: { name: mainTopic! }
@@ -474,16 +474,16 @@ export async function addOrUpdatePersonalLink(
       })
       .unlessConflict((gl) => ({
         on: gl.url,
-        else: gl
+        else: gl,
       }))
       .run(client)
 
     const personalLinkId = await e
       .insert(e.PersonalLink, {
         globalLink: e.select(e.GlobalLink, () => ({
-          filter_single: { id: globalLink.id }
+          filter_single: { id: globalLink.id },
         })),
-        title: title
+        title: title,
         // description: description,
         // mainTopic: e
         //   .insert(e.GlobalTopic, {
@@ -505,7 +505,7 @@ export async function addOrUpdatePersonalLink(
         on: pl.globalLink,
         else: e.update(pl, () => ({
           set: {
-            title: title
+            title: title,
             // description: description,
             // mainTopic: e
             //   .insert(e.GlobalTopic, {
@@ -522,8 +522,8 @@ export async function addOrUpdatePersonalLink(
             //       }
             //     }))
             //   }))
-          }
-        }))
+          },
+        })),
       }))
       .run(client)
 
@@ -532,7 +532,7 @@ export async function addOrUpdatePersonalLink(
     //   filter_single: { url: urlWithoutProtocol }
     // }))
     const personalLink = await e.select(e.PersonalLink, () => ({
-      filter_single: { id: personalLinkId.id }
+      filter_single: { id: personalLinkId.id },
     }))
 
     switch (linkState) {
@@ -540,8 +540,8 @@ export async function addOrUpdatePersonalLink(
         await e
           .update(foundUser, () => ({
             set: {
-              linksBookmarked: { "+=": personalLink }
-            }
+              linksBookmarked: { "+=": personalLink },
+            },
           }))
           .run(client)
         break
@@ -549,8 +549,8 @@ export async function addOrUpdatePersonalLink(
         await e
           .update(foundUser, () => ({
             set: {
-              linksInProgress: { "+=": personalLink }
-            }
+              linksInProgress: { "+=": personalLink },
+            },
           }))
           .run(client)
         break
@@ -558,8 +558,8 @@ export async function addOrUpdatePersonalLink(
         await e
           .update(foundUser, () => ({
             set: {
-              linksCompleted: { "+=": personalLink }
-            }
+              linksCompleted: { "+=": personalLink },
+            },
           }))
           .run(client)
         break
@@ -572,8 +572,8 @@ export async function addOrUpdatePersonalLink(
         await e
           .update(foundUser, () => ({
             set: {
-              linksLiked: { "+=": personalLink }
-            }
+              linksLiked: { "+=": personalLink },
+            },
           }))
           .run(client)
         break
@@ -581,8 +581,8 @@ export async function addOrUpdatePersonalLink(
         await e
           .update(foundUser, () => ({
             set: {
-              linksLiked: { "-=": personalLink }
-            }
+              linksLiked: { "-=": personalLink },
+            },
           }))
           .run(client)
         break
@@ -641,7 +641,7 @@ export async function removeDuplicateUrls() {
   const links = await e
     .select(e.GlobalLink, () => ({
       id: true,
-      url: true
+      url: true,
     }))
     .run(client)
 
@@ -670,3 +670,28 @@ export async function removeDuplicateUrls() {
   //   console.log(res, "res")
   // })
 }
+
+// used in `createPersonalLink`
+// TODO: add personal link to User itself.
+// https://discord.com/channels/841451783728529451/1229531561242792067/1229534822435651714
+// await e.update(e.User)
+// await e.update(foundUser, () => ({
+// 	set:
+// }))
+// const personalLinkId = await e
+// 	.insert(e.PersonalLink, {
+// 		globalLink: e.select(e.GlobalLink, () => ({
+// 			filter_single: { id: globalLink.id },
+// 		})),
+// 		title: title,
+// 	})
+// 	.unlessConflict((pl) => ({
+// 		on: pl.globalLink,
+// 		else: e.update(pl, () => ({
+// 			set: {
+// 				title: title,
+// 			},
+// 		})),
+// 	}))
+// 	.run(client)
+// return personalLinkId

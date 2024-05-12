@@ -1,4 +1,4 @@
-import { getHankoCookie } from "@la/shared/lib"
+import { default as Cookies } from "js-cookie"
 import { makeEventListener } from "@solid-primitives/event-listener"
 import { register } from "@teamhanko/hanko-elements"
 import { UserClient } from "@teamhanko/hanko-frontend-sdk"
@@ -6,6 +6,11 @@ import { onMount } from "solid-js"
 import { useNavigate } from "solid-start"
 import { useUser } from "../GlobalContext/user"
 import { useMobius, useSignIn } from "../root"
+
+function getHankoCookie(): string {
+  const hankoCookie = Cookies.get("hanko")
+  return hankoCookie ?? ""
+}
 
 // uses https://hanko.io authentication
 // it renders hanko web components: https://github.com/teamhanko/hanko/blob/main/frontend/elements/README.md
@@ -21,8 +26,8 @@ export default function SignInPage() {
     const res = await fetch(`${import.meta.env.VITE_HANKO_API}/me`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${getHankoCookie()}`
-      }
+        Authorization: `Bearer ${getHankoCookie()}`,
+      },
     })
     // if status 200, means user is logged in with valid non expired token, navigate to using the app
     if (res.status === 200) {
@@ -38,7 +43,7 @@ export default function SignInPage() {
     // register hanko component
     register(import.meta.env.VITE_HANKO_API, {
       shadow: true, // if true, can use this for styling: https://github.com/teamhanko/hanko/blob/main/frontend/elements/README.md#css-shadow-parts
-      injectStyles: true
+      injectStyles: true,
     }).catch((error) => {
       console.error(error, "error")
     })
@@ -51,7 +56,7 @@ export default function SignInPage() {
       const userClient = new UserClient(import.meta.env.VITE_HANKO_API, {
         timeout: 0,
         cookieName: "hanko",
-        localStorageKey: "hanko"
+        localStorageKey: "hanko",
       })
       const user = await userClient.getCurrent()
       const email = user.email
@@ -63,10 +68,10 @@ export default function SignInPage() {
       await mobius.mutate({
         createUser: {
           where: {
-            email: email
+            email: email,
           },
-          select: true
-        }
+          select: true,
+        },
       })
       userStore.setSignedIn(true)
       userStore.setEmail(email)
@@ -74,8 +79,8 @@ export default function SignInPage() {
       // and is member
       const res = await mobius.query({
         getUserDetails: {
-          isMember: true
-        }
+          isMember: true,
+        },
       })
       if (res) {
         // @ts-ignore

@@ -1,0 +1,77 @@
+{
+  "name": "la",
+  "scripts": {
+    "setup": "bun cmd.ts setup",
+    "web": "cd website && bun dev",
+    "web:deploy-dev": "bun cmd.ts websiteDeployDev",
+    "app": "cd app && bun tauri:dev",
+    "cli": "cd api/edgedb && bun --watch ../../cli/run.ts",
+    "db:ui": "cd api/edgedb && edgedb ui",
+    "db:migrate": "cd api/edgedb && edgedb migration create && edgedb migration apply && cd ../.. && bun db:queries-generate",
+    "db:queries-generate": "cd api/edgedb && bunx @edgedb/generate edgeql-js --target ts && bunx @edgedb/generate queries --target ts",
+    "grafbase": "bun cmd.ts runGrafbase",
+    "graphql": "bun cmd.ts graphql",
+    "graphstate-run": "cat shared/graphql_schema.gql | odin run graphstate > shared/graphql_queries.js",
+    "cmd": "bun --watch cmd.ts",
+    "seed": "cd api/edgedb && bun --watch ../../cli/seed.ts",
+    "ios": "cd mobile && pnpm run ios"
+  },
+  "workspaces": [
+    "app",
+    "website"
+  ],
+  "dependencies": {
+    "@nothing-but/utils": "^0.14.0",
+    "@solid-mediakit/prpc": "^1.2.3",
+    "@solid-mediakit/prpc-plugin": "^1.3.1",
+    "@tanstack/solid-query": "^5.35.1",
+    "@tiptap/extension-mention": "^2.3.1",
+    "@tiptap/extension-placeholder": "^2.3.0",
+    "@tiptap/starter-kit": "^2.3.0",
+    "clsx": "^2.1.1",
+    "cookie": "^0.6.0",
+    "edgedb": "^1.5.4",
+    "fuse.js": "^7.0.0",
+    "grafbase": "^0.70.0",
+    "graphql": "^16.8.1",
+    "inquirer": "^9.2.20",
+    "jose": "^5.2.4",
+    "js-cookie": "^3.0.5",
+    "prosemirror-model": "^1.20.0",
+    "prosemirror-state": "^1.4.3",
+    "prosemirror-transform": "^1.8.0",
+    "prosemirror-view": "^1.33.5",
+    "react": "^18.2.0",
+    "rehype-raw": "^7.0.0",
+    "solid-markdown": "^2.0.3",
+    "stripe": "^15.3.0",
+    "tailwindcss": "^3.4.3",
+    "tippy.js": "^6.3.7",
+    "tiptap-solid": "^1.0.2",
+    "watcher": "^2.3.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.7.1",
+    "@edgedb/generate": "^0.5.3",
+    "@grafbase/sdk": "^0.22.0",
+    "@nothing-but/graphstate": "^0.0.1",
+    "@types/inquirer": "^9.0.7",
+    "@types/js-cookie": "^3.0.6",
+    "@types/react": "^18.2.79",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
+    "bun-types": "1.1.4",
+    "eslint": "^9.1.1",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "typescript": "^5.4.5"
+  },
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "core-js",
+    "esbuild",
+    "grafbase"
+  ],
+  "prettier": {
+    "semi": false
+  }
+}
